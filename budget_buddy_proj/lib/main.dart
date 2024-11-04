@@ -42,8 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const HomePage(),
-    const LogExpenseView()
+    const HomePage(), // View expenses page, remove class below and make a view
+    const LogExpenseView() // Log expenses page
+    // Add Profile Page here
   ];
 
   void _onItemTapped(int index) {
@@ -91,6 +92,8 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+
+// Remove and make ViewExpensesView
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
