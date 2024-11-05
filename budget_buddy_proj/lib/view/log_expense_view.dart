@@ -1,6 +1,7 @@
 import 'package:budget_buddy_proj/view_model/log_expense_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 
 class LogExpenseView extends StatefulWidget {
@@ -12,6 +13,7 @@ class LogExpenseView extends StatefulWidget {
 
 class _LogExpenseViewState extends State<LogExpenseView> {
   final TextEditingController amountController = TextEditingController();
+  final TextEditingController commentController = TextEditingController();
 
   String? selectedCategory;
 
@@ -82,9 +84,8 @@ class _LogExpenseViewState extends State<LogExpenseView> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<LogExpenseViewModel>(context);
-
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -124,10 +125,10 @@ class _LogExpenseViewState extends State<LogExpenseView> {
                           }).toList() +
                             [
                               const DropdownMenuItem<String>(
-                              value: 'Add New Category',
-                              child: Text('Add New Category'),
-                            ),
-                          ],
+                                value: 'Add New Category',
+                                child: Text('Add New Category'),
+                              ),
+                            ],
                           onChanged: (String? newValue) {
                             if (newValue == 'Add New Category') {
                               _showAddCategoryDialog(viewModel);
@@ -177,7 +178,7 @@ class _LogExpenseViewState extends State<LogExpenseView> {
                               child: Text(frequency),
                             );
                           }).toList(),
-                          onChanged: (String? newValue) {  // Move the onChanged function here and add braces
+                          onChanged: (String? newValue) {
                             setState(() {
                               viewModel.selectedFrequency = newValue;
                             });
@@ -186,6 +187,49 @@ class _LogExpenseViewState extends State<LogExpenseView> {
                       ),
                     ],
                   ),
+                  Row(
+                    children: [
+                      const Text('Add Image: '),
+                      const SizedBox(width: 10),
+                      IconButton(
+                        icon: const Icon(Icons.add_a_photo),
+                        onPressed: () async {
+                          await viewModel.pickImage(context); // Call the pickImage method from ViewModel
+                        },
+                      ),
+                      // Use Consumer to listen for changes in imageData
+                      Consumer<LogExpenseViewModel>(
+                        builder: (context, viewModel, child) {
+                          return viewModel.imageData != null
+                            ? Image.memory(viewModel.imageData!, width: 50, height: 50)
+                            : const Text('No image selected'); // Or a placeholder
+                        },
+                      ),
+                      if (viewModel.uploadStatus != null)
+                        Text(viewModel.uploadStatus!),
+                    ],
+                  ),
+                  Row(
+                  children: [
+                    const Text('Comment:'),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: commentController,
+                        maxLines: 4, // Allows for multiple lines
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          hintText: 'Enter your comment here...',
+                        ),
+                        onChanged: (value) {
+                          viewModel.comment = value; // Store the comment in your ViewModel
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 ],
               ),
             ),
@@ -194,10 +238,11 @@ class _LogExpenseViewState extends State<LogExpenseView> {
               onPressed: () {
                 if (viewModel.validateExpense(viewModel.selectedCategory, amountController.text)) {
                   // Call the viewModel to add the expense
-                  viewModel.addExpense(viewModel.selectedCategory!, double.parse(amountController.text), viewModel.selectedFrequency!);
+                  viewModel.addExpense(viewModel.selectedCategory!, double.parse(amountController.text), viewModel.selectedFrequency!, imageData: viewModel.imageData, comment: viewModel.comment);
 
                   // Clear the input fields and reset the selected category
                   amountController.clear();
+                  commentController.clear();
                   viewModel.setSelectedCategory(null); // Reset the selected category
 
                   // Notify the user that the expense was added
@@ -217,4 +262,5 @@ class _LogExpenseViewState extends State<LogExpenseView> {
       ),
     );
   }
+
 }

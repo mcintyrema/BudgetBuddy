@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:typed_data'; // For Uint8List
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'dart:html' as html;
 
 class LogExpenseViewModel extends ChangeNotifier{
 
@@ -23,12 +27,44 @@ class LogExpenseViewModel extends ChangeNotifier{
   final List<log_expense_model> _expenses = [];
 
   String? selectedFrequency;
-
-  String? selectedCategory;  
+  String? selectedCategory; 
+  Uint8List? imageData;
+  String? imagePath;
+  String? uploadStatus;
+  String? comment = '';
 
   List<String> get expenseCategories => List.unmodifiable(_expenseCategories);
   List<String> get frequencies => List.unmodifiable(_frequencies);
   List<log_expense_model> get expenses => List.unmodifiable(_expenses);
+
+  Future<void> pickImage(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+    );
+
+    if (result != null && result.files.isNotEmpty) {
+      // Get the selected file
+      final file = result.files.first;
+
+      // Check if the bytes are available
+      if (file.bytes != null) {
+        // Store the image bytes in your view model
+        imageData = file.bytes; // Assuming imageData is a Uint8List variable in your ViewModel
+
+        // Notify the UI to update
+        notifyListeners();
+
+        // Show a SnackBar to indicate success
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Photo uploaded successfully!')),
+        );
+      }
+    } else {
+      // Handle the case where no image was selected
+      imageData = null; // Reset imageData if no image is selected
+    }
+  }
 
   void setSelectedCategory(String? category) {
     selectedCategory = category;
@@ -93,12 +129,14 @@ class LogExpenseViewModel extends ChangeNotifier{
     await prefs.setString('expenses', jsonString);
   }
 
-  void addExpense(String category, double amount, String frequency) {
+  void addExpense(String category, double amount, String frequency, {Uint8List? imageData, String? comment}) {
     // Create a new expense entry
     final newExpense = log_expense_model(
       category: category,
       amount: amount,
       frequency: frequency,  
+      imageData: imageData != null ? imageData : null,
+      comment: comment != null ? comment : null,
     );
     
     // Add to the _expenses list
@@ -110,6 +148,8 @@ class LogExpenseViewModel extends ChangeNotifier{
     // Clear selected category after adding
     selectedCategory = null;
     selectedFrequency = null;
+    imageData = null;
+    comment = '';
     notifyListeners(); // Notify listeners to update the UI
   }
 
