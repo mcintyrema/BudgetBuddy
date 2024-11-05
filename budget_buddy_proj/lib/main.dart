@@ -20,18 +20,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Budget Buddy',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 20, 255, 4)),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Home Page'),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -46,32 +46,26 @@ class _MyHomePageState extends State<MyHomePage> {
     // Add Profile Page here
   ];
 
+  final List<String> _titles = [
+    'Home Page',  // Title for Home Page
+    'Log Expense',  // Title for Log Expense Page
+    // Add Title for Profile Page here
+  ];
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index; // Update the selected index
     });
   }
   
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text(_titles[_selectedIndex]),  // Update title based on selected index
       ),
-       body: _pages[_selectedIndex], // Display the selected page
+      body: _pages[_selectedIndex],  // Display the selected page
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -82,10 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.add),
             label: 'Log Expense',
           ),
+          // Add Profile Page Item here
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        
       ),
     );
   }
