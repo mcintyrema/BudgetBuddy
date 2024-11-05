@@ -148,8 +148,8 @@ class LogExpenseViewModel extends ChangeNotifier{
     // Clear selected category after adding
     selectedCategory = null;
     selectedFrequency = null;
-    imageData = null;
-    comment = '';
+    this.imageData = null;
+    this.comment = '';
     notifyListeners(); // Notify listeners to update the UI
   }
 
