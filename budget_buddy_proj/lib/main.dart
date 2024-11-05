@@ -2,11 +2,12 @@ import 'package:budget_buddy_proj/view/log_expense_view.dart';
 import 'package:budget_buddy_proj/view_model/log_expense_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:budget_buddy_proj/view/log_expense_modal_view.dart';
 
 void main() {
   runApp(
-     ChangeNotifierProvider(
-      create: (context) => LogExpenseViewModel(), 
+    ChangeNotifierProvider(
+      create: (context) => LogExpenseViewModel(),
       child: const MyApp(),
     ),
   );
@@ -15,7 +16,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -41,13 +41,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const HomePage(), // View expenses page, remove class below and make a view
-    const LogExpenseView() // Log expenses page
+    const HomePage(), // View expenses page
+    const LogExpenseView(), // Log expenses page
     // Add Profile Page here
   ];
 
   final List<String> _titles = [
-    'Home Page',  // Title for Home Page
+    'BudgetBuddy',  // Change to be Month dropdown
     'Log Expense',  // Title for Log Expense Page
     // Add Title for Profile Page here
   ];
@@ -85,17 +85,47 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-
-// Remove and make ViewExpensesView
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      body: Stack( // Use Stack to position the content and the FAB
+        children: [
+          Center(
+            child: Text('Your main content here'), // Placeholder for main content
+          ),
+          // FAB positioned at the top
+          Positioned(
+            top: 56, // Adjust to be closer to the AppBar
+            right: 16, // Distance from the right
+            child: FloatingActionButton(
+              onPressed: () {
+                _showAddExpenseModal(context);
+              },
+              child: const Icon(Icons.add),
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  void _showAddExpenseModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          insetPadding: const EdgeInsets.symmetric(horizontal: 20), // Padding for dialog
+          child: SingleChildScrollView( // Enable scrolling if content is too long
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: QuickAddExpenseView(), // Display the QuickAddExpenseView modal
+            ),
+          ),
+        );
+      },
     );
   }
 }
