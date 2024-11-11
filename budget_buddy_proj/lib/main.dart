@@ -8,9 +8,11 @@ import 'package:budget_buddy_proj/view/log_expense_modal_view.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => LogExpenseViewModel(),
-      create: (context) => ProfilePageViewModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LogExpenseViewModel()),
+        ChangeNotifierProvider(create: (context) => ProfilePageViewModel()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -44,22 +46,20 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const HomePage(), // View expenses page
+    const LogExpenseView(), // View expenses page
     const LogExpenseView(), // Log expenses page
-    const ProfilePageView(),
-    // Add Profile Page here
+    const ProfilePageView(), // Profile page
   ];
 
   final List<String> _titles = [
-    'BudgetBuddy',  // Change to be Month dropdown
-    'Log Expense',  // Title for Log Expense Page
-    'Profile', // Title for Profile page
-    // Add Title for Profile Page here
+    'BudgetBuddy',
+    'Log Expense',
+    'Profile',
   ];
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index; // Update the selected index
+      _selectedIndex = index;
     });
   }
   
@@ -68,11 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(_titles[_selectedIndex]),  // Update title based on selected index
+        title: Text(_titles[_selectedIndex]),
       ),
-      body: _pages[_selectedIndex],  // Display the selected page
+      body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -82,59 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Log Expense',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Profile Page',
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
-          // Add Profile Page Item here
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack( // Use Stack to position the content and the FAB
-        children: [
-          Center(
-            child: Text('Your main content here'), // Placeholder for main content
-          ),
-          // FAB positioned at the top
-          Positioned(
-            top: 56, // Adjust to be closer to the AppBar
-            right: 16, // Distance from the right
-            child: FloatingActionButton(
-              onPressed: () {
-                _showAddExpenseModal(context);
-              },
-              child: const Icon(Icons.add),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showAddExpenseModal(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          insetPadding: const EdgeInsets.symmetric(horizontal: 20), // Padding for dialog
-          child: SingleChildScrollView( // Enable scrolling if content is too long
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: QuickAddExpenseView(), // Display the QuickAddExpenseView modal
-            ),
-          ),
-        );
-      },
     );
   }
 }
