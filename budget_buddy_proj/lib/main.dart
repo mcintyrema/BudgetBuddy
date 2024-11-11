@@ -1,5 +1,7 @@
 import 'package:budget_buddy_proj/view/log_expense_view.dart';
 import 'package:budget_buddy_proj/view_model/log_expense_view_model.dart';
+import 'package:budget_buddy_proj/view/profile_page_view.dart';
+import 'package:budget_buddy_proj/view_model/profile_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:budget_buddy_proj/view/log_expense_modal_view.dart';
@@ -8,6 +10,7 @@ void main() {
   runApp(
     ChangeNotifierProvider(
       create: (context) => LogExpenseViewModel(),
+      create: (context) => ProfilePageViewModel(),
       child: const MyApp(),
     ),
   );
@@ -43,12 +46,14 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pages = [
     const HomePage(), // View expenses page
     const LogExpenseView(), // Log expenses page
+    const ProfilePageView(),
     // Add Profile Page here
   ];
 
   final List<String> _titles = [
     'BudgetBuddy',  // Change to be Month dropdown
     'Log Expense',  // Title for Log Expense Page
+    'Profile', // Title for Profile page
     // Add Title for Profile Page here
   ];
 
@@ -75,6 +80,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
             label: 'Log Expense',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: 'Profile Page',
           ),
           // Add Profile Page Item here
         ],
