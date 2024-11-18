@@ -2,6 +2,8 @@ import 'package:budget_buddy_proj/view/log_expense_view.dart';
 import 'package:budget_buddy_proj/view_model/log_expense_view_model.dart';
 import 'package:budget_buddy_proj/view/profile_page_view.dart';
 import 'package:budget_buddy_proj/view_model/profile_page_view_model.dart';
+import 'package:budget_buddy_proj/view/budget_view.dart'; // Import the BudgetView
+import 'package:budget_buddy_proj/view_model/budget_view_model.dart'; // Import the BudgetViewModel
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:budget_buddy_proj/view/log_expense_modal_view.dart';
@@ -12,6 +14,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => LogExpenseViewModel()),
         ChangeNotifierProvider(create: (context) => ProfilePageViewModel()),
+        ChangeNotifierProvider(create: (context) => BudgetViewModel()), // Add BudgetViewModel provider
       ],
       child: const MyApp(),
     ),
@@ -49,12 +52,14 @@ class _MyHomePageState extends State<MyHomePage> {
     const LogExpenseView(), // View expenses page
     const LogExpenseView(), // Log expenses page
     const ProfilePageView(), // Profile page
+    const BudgetView(), // Budget view page (added for your task)
   ];
 
   final List<String> _titles = [
     'BudgetBuddy',
     'Log Expense',
     'Profile',
+    'Budget Overview', // Added title for the new Budget Overview page
   ];
 
   void _onItemTapped(int index) {
@@ -84,6 +89,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet), // Added icon for Budget Overview
+            label: 'Budget Overview', // Added label for Budget Overview
           ),
         ],
         currentIndex: _selectedIndex,
