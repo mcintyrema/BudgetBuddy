@@ -33,7 +33,7 @@ class BudgetViewModel extends ChangeNotifier {
 
   List<MapEntry<String, double>> get sortedCategorySpending {
     var sorted = categorySpending.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value)); // Sort descending by amount
+      ..sort((a, b) => b.value.compareTo(a.value));
     return sorted;
   }
 }
