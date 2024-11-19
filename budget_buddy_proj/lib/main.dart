@@ -2,8 +2,8 @@ import 'package:budget_buddy_proj/view/log_expense_view.dart';
 import 'package:budget_buddy_proj/view_model/log_expense_view_model.dart';
 import 'package:budget_buddy_proj/view/profile_page_view.dart';
 import 'package:budget_buddy_proj/view_model/profile_page_view_model.dart';
-import 'package:budget_buddy_proj/view/budget_view.dart'; // Import the BudgetView
-import 'package:budget_buddy_proj/view_model/budget_view_model.dart'; // Import the BudgetViewModel
+import 'package:budget_buddy_proj/view/budget_view.dart';
+import 'package:budget_buddy_proj/view_model/budget_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:budget_buddy_proj/view/log_expense_modal_view.dart';
@@ -14,7 +14,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => LogExpenseViewModel()),
         ChangeNotifierProvider(create: (context) => ProfilePageViewModel()),
-        ChangeNotifierProvider(create: (context) => BudgetViewModel()), // Add BudgetViewModel provider
+        ChangeNotifierProvider(create: (context) => BudgetViewModel()),
       ],
       child: const MyApp(),
     ),
@@ -49,17 +49,17 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const LogExpenseView(), // View expenses page
-    const LogExpenseView(), // Log expenses page
-    const ProfilePageView(), // Profile page
-    const BudgetView(), // Budget view page (added for your task)
+    const LogExpenseView(),
+    const LogExpenseView(),
+    const ProfilePageView(),
+    const BudgetView(),
   ];
 
   final List<String> _titles = [
     'BudgetBuddy',
     'Log Expense',
     'Profile',
-    'Budget Overview', // Added title for the new Budget Overview page
+    'Budget Overview',
   ];
 
   void _onItemTapped(int index) {
@@ -91,8 +91,8 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Profile',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet), // Added icon for Budget Overview
-            label: 'Budget Overview', // Added label for Budget Overview
+            icon: Icon(Icons.account_balance_wallet),
+            label: 'Budget Overview',
           ),
         ],
         currentIndex: _selectedIndex,
