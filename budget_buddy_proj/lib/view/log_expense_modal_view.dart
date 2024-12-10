@@ -11,7 +11,7 @@ class QuickAddExpenseView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Category:'),
+        const Text('*Category:'),
         DropdownButton<String>(
           value: viewModel.selectedCategory,
           hint: const Text('Select a category'),
@@ -27,7 +27,7 @@ class QuickAddExpenseView extends StatelessWidget {
           },
         ),
         const SizedBox(height: 16),
-        const Text('Amount:'),
+        const Text('*Amount:'),
         TextField(
           controller: amountController,
           keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -37,7 +37,7 @@ class QuickAddExpenseView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        const Text('Frequency:'),
+        const Text('*Frequency:'),
         DropdownButton<String>(
           value: viewModel.selectedFrequency,
           hint: const Text('Select frequency'),

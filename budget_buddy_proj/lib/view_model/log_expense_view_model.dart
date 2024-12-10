@@ -9,6 +9,8 @@ import 'dart:io';
 import 'dart:html' as html;
 
 class LogExpenseViewModel extends ChangeNotifier{
+  double _initialBudget = 0.0;
+  double get initialBudget => _initialBudget;
 
   List<String> _expenseCategories = [
     'Rent',
@@ -66,6 +68,11 @@ class LogExpenseViewModel extends ChangeNotifier{
     }
   }
 
+  void setInitialBudget(double budget) {
+    _initialBudget = budget;
+    notifyListeners();
+  }
+  
   void setSelectedCategory(String? category) {
     selectedCategory = category;
     notifyListeners();

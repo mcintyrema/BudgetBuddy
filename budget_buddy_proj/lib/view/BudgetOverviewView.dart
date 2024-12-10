@@ -10,6 +10,7 @@ class BudgetOverviewView extends StatelessWidget {
   Widget build(BuildContext context) {
     final expenseViewModel = Provider.of<LogExpenseViewModel>(context);
     final expenses = expenseViewModel.expenses;
+    final initialBudget = expenseViewModel.initialBudget;
 
     double totalExpenses = expenses.fold(
       0.0,
@@ -17,6 +18,52 @@ class BudgetOverviewView extends StatelessWidget {
     );
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Enter Your Budget: '),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              // Show a dialog to set the initial budget
+              showDialog(
+                context: context,
+                builder: (context) {
+                  double? newBudget;
+                  return AlertDialog(
+                    title: const Text('Set Initial Budget'),
+                    content: TextField(
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Enter budget amount',
+                      ),
+                      onChanged: (value) {
+                        newBudget = double.tryParse(value);
+                      },
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (newBudget != null) {
+                            expenseViewModel.setInitialBudget(newBudget!);
+                          }
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Set'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Container(
@@ -25,12 +72,17 @@ class BudgetOverviewView extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  '-\$${totalExpenses.toStringAsFixed(2)}',
+                  '\$${(initialBudget - totalExpenses).toStringAsFixed(2)}',
                   style: const TextStyle(fontSize: 24, color: Colors.white),
                 ),
                 const Text(
-                  'Net Budget Spent',
+                  'Remaining Budget',
                   style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Total Budget: \$${initialBudget.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ],
             ),
