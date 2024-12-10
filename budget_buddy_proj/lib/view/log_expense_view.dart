@@ -99,7 +99,7 @@ class _LogExpenseViewState extends State<LogExpenseView> {
                 children: [
                   Row(
                     children: [
-                      const Text('Category:'),
+                      const Text('*Category:'),
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton<String>(
@@ -145,7 +145,7 @@ class _LogExpenseViewState extends State<LogExpenseView> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      const Text('Amount:'),
+                      const Text('*Amount:'),
                       const SizedBox(width: 10),
                       Expanded(
                         child: TextField(
@@ -165,7 +165,7 @@ class _LogExpenseViewState extends State<LogExpenseView> {
                   const SizedBox(height: 16),
                   Row(
                     children: [
-                      const Text('Repeat:'),
+                      const Text('*Repeat:'),
                       const SizedBox(width: 10),
                       Expanded(
                         child: DropdownButton<String>(

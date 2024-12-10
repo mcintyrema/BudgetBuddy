@@ -1,8 +1,8 @@
 import 'package:budget_buddy_proj/view/log_expense_view.dart';
+import 'package:budget_buddy_proj/view/BudgetOverviewView.dart';
 import 'package:budget_buddy_proj/view_model/log_expense_view_model.dart';
 import 'package:budget_buddy_proj/view/profile_page_view.dart';
 import 'package:budget_buddy_proj/view_model/profile_page_view_model.dart';
-import 'package:budget_buddy_proj/view/budget_view.dart';
 import 'package:budget_buddy_proj/view_model/budget_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,17 +49,15 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    const LogExpenseView(),
+    const BudgetOverviewView(),
     const LogExpenseView(),
     const ProfilePageView(),
-    const BudgetView(),
   ];
 
   final List<String> _titles = [
-    'BudgetBuddy',
+    'Budget Overview',
     'Log Expense',
     'Profile',
-    'Budget Overview',
   ];
 
   void _onItemTapped(int index) {
@@ -79,8 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.account_balance_wallet),
+            label: 'Budget Overview',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
@@ -89,10 +87,6 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet),
-            label: 'Budget Overview',
           ),
         ],
         currentIndex: _selectedIndex,
