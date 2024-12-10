@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:budget_buddy_proj/view_model/log_expense_view_model.dart';
 import 'package:budget_buddy_proj/model/log_expense_model.dart';
+import 'package:budget_buddy_proj/view/log_expense_modal_view.dart';
 
 class BudgetOverviewView extends StatelessWidget {
   const BudgetOverviewView({super.key});
@@ -59,6 +60,22 @@ class BudgetOverviewView extends StatelessWidget {
                     ],
                   );
                 },
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {
+              // Open the modal
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true, // Allow the modal to adjust its size
+                builder: (context) => Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom,
+                  ), // Adjust for keyboard overlay
+                  child: QuickAddExpenseView(),
+                ),
               );
             },
           ),
